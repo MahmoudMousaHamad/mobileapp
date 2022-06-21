@@ -24,7 +24,7 @@ export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (expoPushToken) {
+    if (expoPushToken && user) {
       console.log("User: ", user);
       dispatch(setPushToken(user.id, expoPushToken))
         .then(() => {
