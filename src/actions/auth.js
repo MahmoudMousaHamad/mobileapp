@@ -5,6 +5,7 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     SET_MESSAGE,
+    PUSH_TOEKN_SET,
   } from "./types";
 import AuthService from "../services/auth";
 
@@ -71,3 +72,31 @@ export const logout = () => (dispatch) => {
       type: LOGOUT,
     });
   };
+
+export const setPushToken = (userId, pushToken) => (dispatch) => {
+  return AuthService.setPushToken(userId, pushToken).then(
+    (data) => {
+      dispatch({
+        type: SET_MESSAGE,
+        payload: "Push token sent to server.",
+      });
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      dispatch({
+        type: LOGIN_FAIL,
+      });
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+      return Promise.reject();
+    }
+  );
+}

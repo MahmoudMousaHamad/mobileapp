@@ -1,3 +1,5 @@
+import secureStore from '../secureStore';
+
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -6,11 +8,18 @@ import {
   LOGOUT,
 } from '../actions/types';
 
-const user = JSON.parse(localStorage.getItem('user'));
-const initialState = user
+
+async function getUser() {
+  const user = await secureStore.get('user');
+  // console.log("User1: ", user);
+  const initialState = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
-export default function (state = initialState, action) {
+
+  return initialState;
+}
+
+export default function (state = getUser(), action) {
   const { type, payload } = action;
   switch (type) {
     case REGISTER_SUCCESS:

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "419128360076",
+    "project_id": "awesome-app-97868",
+    "storage_bucket": "awesome-app-97868.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419128360076:android:5022715e2f1a5d17de0fa9",
+        "android_client_info": {
+          "package_name": "com.mahmoudmousahamad.androidapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419128360076-a3gmscarovr6oi7cfnn2b01k096b8hok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxpRjOx1eLH3qy0CbIpzvtlTgZoysilk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "419128360076-a3gmscarovr6oi7cfnn2b01k096b8hok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

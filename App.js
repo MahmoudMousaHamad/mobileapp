@@ -6,6 +6,7 @@ import MyApp from './src/index';
 import store from './src/store';
 
 export default function App() {
+
   return (
     <Provider store={store}>
       <ApplicationProvider {...eva} theme={eva.light}>

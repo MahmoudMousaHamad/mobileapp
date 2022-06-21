@@ -1,27 +1,28 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Input, Layout, Button } from '@ui-kitten/components';
-import { useForm } from "react-hook-form";
+import { Input, Layout, Button, Text } from '@ui-kitten/components';
+import { useForm, Controller } from "react-hook-form";
 
-import { register as registerUser } from "../actions/auth";
+import { register } from "../actions/auth";
 
 const Register = () => {
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const password = useRef({});
   password.current = watch("password", "");
 
   const { isLoggedIn } = useSelector(state => state.auth);
+  const { message } = useSelector(state => state.message);
   const dispatch = useDispatch();
 
   const handleRegister = (data) => {
     const {email, password} = data;
 
-    dispatch(registerUser(email, password))
+    dispatch(register(email, password))
       .then(() => {
-        console.log("Login successful!");
+        console.log("Registration successful!");
       })
       .catch(() => {
-        console.log("Login failed.")
+        console.log(message);
       });
   };
 
@@ -32,24 +33,57 @@ const Register = () => {
   
   return (
     <Layout>
-      <Input placeholder="Email" type="email"
-        {...register("email", {
-          required: true,
-          pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ 
-        })} />
-      <Input placeholder="Password" type="password"
-        {...register("password", {required: true, minLength: 5})} />
+      <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input 
+              placeholder="Email"
+              type="email" 
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value} />
+          )}
+          name="email"
+        />
+        {errors.email && <Text>Please check your email</Text>}
+        
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input 
+              placeholder="Password"
+              type="password" 
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value} />
+          )}
+          name="password"
+        />
 
-      <Input placeholder="Password" type="password"
-        {...register("password_repeat", {
-          validate: value =>
-            value === password.current || "The passwords do not match"
-        })} />
+        <Controller
+          control={control}
+          rules={{ 
+            validate: value =>
+              value === password.current || "The passwords do not match"
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input 
+              placeholder="Repeat password"
+              type="password"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value} />
+          )}
+          name="repeat_password"
+        />
 
-      <Button type="submit" onPress={() => handleSubmit(handleLogin)}>Login</Button>
+        {errors.password && <Text>Please check your password</Text>}
+        {errors.repeat_password && <Text>{errors.repeat_password.message}</Text>}
 
-      {errors.email && <p>Please check your email</p>}
-      {errors.password && <p>Please check your password</p>}
+
+      <Button type="submit" onPress={handleSubmit(handleRegister)}>Login</Button>
     </Layout>
   );
 };

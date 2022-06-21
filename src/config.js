@@ -12,9 +12,11 @@ switch (NODE_ENV) {
     break;
 
   default:
-    serverEndpoint = 'http://localhost:3000/';
+    serverEndpoint = 'http://167.172.133.156/';
     break;
 }
+
+console.log("Server Endpoint: ", serverEndpoint);
 
 export default {
   SERVER_ENDPOINT: serverEndpoint,

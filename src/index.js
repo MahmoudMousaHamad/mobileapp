@@ -2,21 +2,21 @@ import * as React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import {
     Login,
     Register,
     Profile,
-    Home
+    Question
 } from "./screens/index";
 import { logout } from "./actions/auth";
+import { getUser } from './utils';
   
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const { user: currentUser } = useSelector((state) => state.auth);
+  const user = getUser(useSelector((state) => state.auth));
   const dispatch = useDispatch();
 
   const logOut = () => {
@@ -24,37 +24,21 @@ const App = () => {
   };
 
   return (
-      <NavigationContainer>
-              {currentUser ? (
+    <NavigationContainer>
+      <Tab.Navigator>
+              {user ? (
                 <>
-                    <Button
-                        title="Profile"
-                        onPress={() => navigation.navigate('Profile')}
-                    />
-                    <Button
-                        title="Logout"
-                        onPress={() => logOut() && navigation.navigate('Login')}
-                    />
+                  <Tab.Screen name="Question" component={Question} />
+                  <Tab.Screen name="Profile" component={Profile} />
                 </>
               ) : (
                 <>
-                    <Button
-                        title="Login"
-                        onPress={() => navigation.navigate('Login')}
-                    />
-                    <Button
-                        title="Register"
-                        onPress={() => navigation.navigate('Register')}
-                    />
+                  <Tab.Screen name="Login" component={Login} />
+                  <Tab.Screen name="Register" component={Register} />
                 </>
               )}
-            <Stack.Navigator>
-                <Stack.Screen name="Home" component={<Home/>} />
-                <Stack.Screen name="Login" component={<Login/>} />
-                <Stack.Screen name="Register" component={<Register/>} />
-                <Stack.Screen name="Profile" component={<Profile/>} />
-            </Stack.Navigator>
-      </NavigationContainer>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 
