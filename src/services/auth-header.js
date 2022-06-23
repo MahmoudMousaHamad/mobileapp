@@ -5,10 +5,10 @@ import secureStore from '../secureStore';
     If there is a logged in user with accessToken (JWT), return HTTP Authorization header. 
     Otherwise, return an empty object.
 */
-export default function authHeader() {
-    const user = JSON.parse(secureStore.get('user'));
-    if (user && user.accessToken) {
-      return { 'x-access-token': user.accessToken };
+export default async function authHeader() {
+    const user = JSON.parse(await secureStore.get('user'));
+    if (user && user.token) {
+      return { 'x-access-token': user.token };
     } else {
       return {};
     }

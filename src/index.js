@@ -1,8 +1,6 @@
-import * as React from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useEffect, useState } from "react";
 
 import {
     Login,
@@ -10,23 +8,28 @@ import {
     Profile,
     Question
 } from "./screens/index";
-import { logout } from "./actions/auth";
-import { getUser } from './utils';
-  
+import secureStore from "./secureStore";
+import { useSelector } from 'react-redux';
+
 const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const user = getUser(useSelector((state) => state.auth));
-  const dispatch = useDispatch();
+  const [user, setUser] = useState();
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const logOut = () => {
-    dispatch(logout());
-  };
+  useEffect(() => {
+    async function getUser() {
+      const user = await secureStore.get('user');
+      console.log(user);
+      setUser(user);
+    }
+    getUser();
+  }, []);
 
   return (
     <NavigationContainer>
       <Tab.Navigator>
-              {user ? (
+              {isLoggedIn ? (
                 <>
                   <Tab.Screen name="Question" component={Question} />
                   <Tab.Screen name="Profile" component={Profile} />

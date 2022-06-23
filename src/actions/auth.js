@@ -39,6 +39,11 @@ export const register = (username, email, password) => (dispatch) => {
       }
     );
   };
+
+export const me = () => (dispatch) => {
+  return AuthService.me().then(console.log).catch(console.log);
+}
+
 export const login = (username, password) => (dispatch) => {
     return AuthService.login(username, password).then(
       (data) => {
@@ -62,16 +67,18 @@ export const login = (username, password) => (dispatch) => {
           type: SET_MESSAGE,
           payload: message,
         });
+        console.log(message);
         return Promise.reject();
       }
     );
   };
-export const logout = () => (dispatch) => {
-    AuthService.logout();
+export const logout = () => async (dispatch) => {
+    await AuthService.logout();
     dispatch({
       type: LOGOUT,
     });
   };
+
 
 export const setPushToken = (userId, pushToken) => (dispatch) => {
   return AuthService.setPushToken(userId, pushToken).then(

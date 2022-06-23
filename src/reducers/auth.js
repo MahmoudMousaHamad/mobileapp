@@ -9,17 +9,12 @@ import {
 } from '../actions/types';
 
 
-async function getUser() {
-  const user = await secureStore.get('user');
-  // console.log("User1: ", user);
-  const initialState = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+const user = secureStore.get('user');
+const initialState = user
+? { isLoggedIn: true, user }
+: { isLoggedIn: false, user: null };
 
-  return initialState;
-}
-
-export default function (state = getUser(), action) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case REGISTER_SUCCESS:

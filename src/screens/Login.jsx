@@ -24,10 +24,10 @@ const Login = ({ navigation }) => {
       });
   };
 
-  if (isLoggedIn) {
-    navigation.navigate('Profile');
-    return;
-  }
+  // if (isLoggedIn) {
+  //   navigation.navigate('Profile');
+  //   return;
+  // }
 
   return (
     <Layout>

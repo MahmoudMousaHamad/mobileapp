@@ -2,6 +2,7 @@ import axios from "axios";
 import secureStore from '../secureStore';
 
 import config from '../config';
+import authHeader from "./auth-header";
 
 const register = (email, password) => {
   return axios.post(config.AUTH_API_URL + "signup", {
@@ -18,14 +19,14 @@ const login = (email, password) => {
     })
     .then(async (response) => {
       if (response.data.token) {
-        await localStorage.setItem("user", JSON.stringify(response.data));
+        await secureStore.set("user", JSON.stringify(response.data));
       }
       return response.data;
     });
 };
 
-const logout = () => {
-  secureStore.remove("user");
+const logout = async () => {
+  await secureStore.remove("user");
 };
 
 const setPushToken = (userId, pushToken) => {
@@ -36,15 +37,22 @@ const setPushToken = (userId, pushToken) => {
     })
     .then(async (response) => {
       if (response.data.token) {
-        await localStorage.setItem("user", JSON.stringify(response.data));
+        await secureStore.set("user", JSON.stringify(response.data));
       }
       return response.data;
     });
 }
 
+const me = async () => {
+  const headers = await authHeader();
+  console.log("HEADERS: ", headers);
+  return axios.get(config.AUTH_API_URL + "me", { headers });
+};
+
 export default {
   register,
   login,
   logout,
+  me,
   setPushToken,
 };

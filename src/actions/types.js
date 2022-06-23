@@ -9,4 +9,5 @@ export const PUSH_TOEKN_SET = "PUSH_TOEKN_SENT";
 export const SET_MESSAGE = 'SET_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 
-export const RECEIVED_QUESTION = 'RECEIVED_QUESTION'; 
+export const GOT_DATA = "GOT_DATA";
+export const SEND_DATA = "SEND_DATA";
