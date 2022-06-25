@@ -1,20 +1,18 @@
 import { Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import useGetUser from '../useGetUser';
 import useSetupNotification from '../useSetupNotification'; 
 
 export default () => {
-  // const user = getUser(useSelector((state) => state.auth));
-  // const token = useSetupNotification(user);
+  const user = useGetUser();
+  // const { question } = useSelector((state) => state.data);
 
-  const { question } = useSelector((state) => state.data);
-
-  question && console.log(question);
+  useSetupNotification(user);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>The question from your job application will show up here.</Text>
-      {/* <Notification /> */}
     </View>
   );
 }
