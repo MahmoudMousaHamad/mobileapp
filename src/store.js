@@ -8,6 +8,7 @@ import reducer from "./reducers";
 import config from "./config";
 import { SOCKET_SEND_DATA } from "./actions/types";
 import secureStore from "./secureStore";
+import Socket from './Socket';
 
 let socket;
 
@@ -44,7 +45,7 @@ const startSocket = async (store) => {
 
   socket.emit('source', 'mobile');
   
-  const user = await secureStore.get('user');
+  const user = JSON.parse(await secureStore.get('user'));
   store.dispatch(Actions.sendData("user", user));
 
   ["question"].forEach((channel) => {
@@ -56,7 +57,8 @@ const startSocket = async (store) => {
 
 const store = createStore(reducer, applyMiddleware(SocketMiddleware, thunk));
 
-startSocket(store);
+// startSocket(store);
+socket = Socket.connect(config.SERVER_ENDPOINT, store);
 
 export default store;
 
