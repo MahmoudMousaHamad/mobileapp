@@ -10,4 +10,4 @@ export const SET_MESSAGE = 'SET_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 
 export const GOT_DATA = "GOT_DATA";
-export const SEND_DATA = "SEND_DATA";
+export const SOCKET_SEND_DATA = "SEND_DATA";

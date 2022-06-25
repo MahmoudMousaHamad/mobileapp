@@ -1,4 +1,4 @@
-import { GOT_DATA, SEND_DATA } from "./types";
+import { GOT_DATA, SOCKET_SEND_DATA } from "./types";
 
 export const gotData = (data, name) => ({
   type: GOT_DATA,
@@ -7,7 +7,7 @@ export const gotData = (data, name) => ({
 });
 
 export const sendData = (channel, data) => ({
-  type: SEND_DATA,
+  type: SOCKET_SEND_DATA,
   payload: data,
   channel,
 });
