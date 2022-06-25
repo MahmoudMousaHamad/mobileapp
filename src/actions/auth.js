@@ -83,10 +83,6 @@ export const logout = () => async (dispatch) => {
 export const setPushToken = (userId, pushToken) => (dispatch) => {
   return AuthService.setPushToken(userId, pushToken).then(
     (data) => {
-      dispatch({
-        type: SET_MESSAGE,
-        payload: "Push token sent to server.",
-      });
       return Promise.resolve();
     },
     (error) => {

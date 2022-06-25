@@ -35,12 +35,12 @@ export default function useSetupNotification(user) {
         const token = (await Notifications.getExpoPushTokenAsync()).data;
 
         dispatch(setPushToken(user.id, token))
-        .then(() => {
-          console.log("Push token set successfully.");
-        })
-        .catch(e => {
-          console.log("Push token set failed.");
-        });
+          .then(() => {
+            console.log("Push token set successfully.");
+          })
+          .catch(e => {
+            console.log("Push token set failed.");
+          });
       } else {
         alert('Must use physical device for Push Notifications');
       }
@@ -58,7 +58,10 @@ export default function useSetupNotification(user) {
     user && registerForPushNotificationsAsync();
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      const { data, name } = notification.request.content;
+      const { data: { name } } = notification.request.content;
+      const { data: { [name]: data } } =  notification.request.content;
+      console.log("Name: ", name);
+      console.log("Data: ", data);
       dispatch(gotData(data, name));
     });
 
