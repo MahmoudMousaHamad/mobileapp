@@ -1,4 +1,4 @@
-import { applyMiddleware, compose } from "redux";
+import { applyMiddleware, compose, createStore } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
 import socketIOClient from "socket.io-client";
@@ -7,22 +7,27 @@ import * as Actions from "./actions/data";
 import reducer from "./reducers";
 import config from "./config";
 import { SOCKET_SEND_DATA } from "./actions/types";
+import secureStore from "./secureStore";
 
 let socket;
 
 const SocketMiddleware = (store) => (next) => (action) => {
-  console.log(action);
+  const { channel, payload } = action;
   if (socket) {
     switch (action.type) {
       case SOCKET_SEND_DATA:
         console.log(
           "Sending data over socket channel.",
           "Channel:",
-          action.channel,
+          channel,
           "Payload:",
-          action.payload
+          payload
         );
-        socket.emit(action.channel, action.payload);
+        if (payload || payload === false || payload === 0) {
+          socket.emit(channel, payload);
+        } else {
+          throw new Error("Not sending to server because payload is null or undefined...", payload);
+        }
         break;
       default:
         break;
@@ -34,13 +39,13 @@ const SocketMiddleware = (store) => (next) => (action) => {
   return next(action);
 };
 
-const StartSocket = (store) => {
+const startSocket = async (store) => {
   socket = socketIOClient(config.SERVER_ENDPOINT);
 
-  socket.on("handshake", () => console.log("Socket connection established."));
-
-  console.log("Sending user to server.");
-  store.dispatch(Actions.sendData("user", store.getState().auth.user));
+  socket.emit('source', 'mobile');
+  
+  const user = await secureStore.get('user');
+  store.dispatch(Actions.sendData("user", user));
 
   ["question"].forEach((channel) => {
     socket.on(channel, (data) => {
@@ -51,8 +56,7 @@ const StartSocket = (store) => {
 
 const store = createStore(reducer, applyMiddleware(SocketMiddleware, thunk));
 
-// Set up socket
-StartSocket(store);
+startSocket(store);
 
 export default store;
 

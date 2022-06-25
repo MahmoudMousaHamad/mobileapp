@@ -1,7 +1,7 @@
 import { Button } from '@ui-kitten/components';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
 import { sendData } from '../actions/data';
 
 import Question from '../components/Question';
@@ -10,6 +10,7 @@ import useSetupNotification from '../useSetupNotification';
 
 export default () => {
   const { question } = useSelector((state) => state.data);
+  const { store } = useContext(ReactReduxContext);
   const [answer, setAnswer] = useState();
   const dispatch = useDispatch();
   const user = useGetUser();
@@ -21,8 +22,12 @@ export default () => {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       {!question && <Text>The question from your job application will show up here.</Text>}
-      {question && <Question question={question} handleChange={setAnswer} answer={answer} />}
-      <Button onPress={dispatch(sendData("answer", answer))}>Submit</Button>
+      {question && (
+      <>
+        <Question question={question} handleChange={setAnswer} answer={answer} />
+        <Button onPress={() => dispatch(sendData("answer", answer))}>Submit</Button>
+      </> 
+      )}
     </View>
   );
 }

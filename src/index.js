@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useEffect, useState } from "react";
 
 import {
     Login,
@@ -8,14 +7,13 @@ import {
     Profile,
     Question
 } from "./screens/index";
-import secureStore from "./secureStore";
 import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
-
+  
   return (
     <NavigationContainer>
       <Tab.Navigator>

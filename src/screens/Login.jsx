@@ -24,11 +24,6 @@ const Login = ({ navigation }) => {
       });
   };
 
-  // if (isLoggedIn) {
-  //   navigation.navigate('Profile');
-  //   return;
-  // }
-
   return (
     <Layout>
         <Controller

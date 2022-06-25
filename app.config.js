@@ -1,7 +1,9 @@
+const LOCAL_IP_ADDRESS = require("ip").address().toString();
+
 export default {
     name: 'mobileapp',
     version: '1.0.0',
     extra: {
-      enableComments: process.env.COOLAPP_COMMENTS === 'true',
+      LOCAL_IP_ADDRESS,
     },
 };

@@ -28,7 +28,7 @@ const questionTypeInput = {
         value={value} />,
     },
     radio: {
-      element: (options, handleChange, index) =>
+      element: (options, handleChange, index = 0) =>
         <RadioGroup
             selectedIndex={index}
             onChange={handleChange}>

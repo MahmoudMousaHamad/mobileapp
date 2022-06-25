@@ -1,6 +1,6 @@
-const { NODE_ENV } = process.env;
+import Constants from 'expo-constants';
 
-const LOCAL_IP_ADDRESS = process.env.LOCAL_IP_ADDRESS;
+const { NODE_ENV } = process.env;
 
 let serverEndpoint;
 
@@ -14,13 +14,14 @@ switch (NODE_ENV) {
     break;
 
   default:
-    console.log(process.env);
+    const LOCAL_IP_ADDRESS = Constants.manifest.extra.LOCAL_IP_ADDRESS
 
     if (!LOCAL_IP_ADDRESS) {
       throw Error(`
       Please add LOCAL_IP_ADDRESS environment variable by creating a .env file
       in the root of the project and add LOCAL_IP_ADDRESS=[YOUR_LOCAL_IP_ADDRESS].
-      If you did that already, try running the application using expo r -c
+      If you did that already and still can't reach the development server, then
+      try running the application using "expo r -c"
       `);
     }
     
