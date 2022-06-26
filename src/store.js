@@ -40,20 +40,6 @@ const SocketMiddleware = (store) => (next) => (action) => {
   return next(action);
 };
 
-const startSocket = async (store) => {
-  socket = socketIOClient(config.SERVER_ENDPOINT);
-
-  socket.emit('source', 'mobile');
-  
-  const user = JSON.parse(await secureStore.get('user'));
-  store.dispatch(Actions.sendData("user", user));
-
-  ["question"].forEach((channel) => {
-    socket.on(channel, (data) => {
-      store.dispatch(Actions.gotData(data, channel));
-    });
-  });
-};
 
 const store = createStore(reducer, applyMiddleware(SocketMiddleware, thunk));
 

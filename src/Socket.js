@@ -1,4 +1,5 @@
 import {connect} from "socket.io-client";
+import * as Notifications from 'expo-notifications';
 
 import * as Actions from "./actions/data";
 import secureStore from "./secureStore";
@@ -27,9 +28,28 @@ export default {
             store.dispatch(Actions.sendData("authentication", {user, source: 'mobile'}));
 			// this.socket.on('authenticated', function() {});
 
-            ["question"].forEach((channel) => {
-                this.socket.on(channel, (data) => {
+			const channels = [
+				{
+					channel: "question",
+					notification: {
+						title: "(LOCAL) A question needs your attention!",
+						body: "Tab to answer."
+					}
+				}
+			]
+
+            channels.forEach(({channel, notification}) => {
+                this.socket.on(channel, async (data) => {
                   store.dispatch(Actions.gotData(data, channel));
+				  const { appState: { state } } = store.getState();
+				  console.log("APP STATE: ", state);
+				  if (state === "background") {
+					console.log("Sending local notification...");
+					await Notifications.scheduleNotificationAsync({
+						content: {...notification, data},
+						trigger: { seconds: 2 },
+					});
+				  }
                 });
             });
             

@@ -1,23 +1,23 @@
 import { Button } from '@ui-kitten/components';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
-import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sendData } from '../actions/data';
 
-import Question from '../components/Question';
-import useGetUser from '../useGetUser';
 import useSetupNotification from '../useSetupNotification'; 
+import Question from '../components/Question';
+import useAppState from '../useAppState';
+import useGetUser from '../useGetUser';
 
 export default () => {
   const { question } = useSelector((state) => state.data);
-  const { store } = useContext(ReactReduxContext);
+  const { state } = useSelector((state) => state.appState);
   const [answer, setAnswer] = useState();
   const dispatch = useDispatch();
   const user = useGetUser();
 
   useSetupNotification(user);
-
-  answer && console.log("Answer: ", answer);
+  useAppState();
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
