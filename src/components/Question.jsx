@@ -5,10 +5,10 @@ import { CheckBox, IndexPath, Input, Layout, Radio, RadioGroup, Select, SelectIt
   
 const questionTypeInput = {
     text: {
-      element: (handleChange, value) => 
+      element: (handleChange, value = '') => 
         <Input 
         placeholder='Your answer...' 
-        onChange={handleChange} 
+        onChangeText={handleChange} 
         value={value} />,
     },
     textarea: {
@@ -16,7 +16,7 @@ const questionTypeInput = {
         <Input 
         placeholder='Your answer...' 
         multiline={true} 
-        onChange={handleChange} 
+        onChangeText={handleChange} 
         value={value} />,
     },
     number: {
@@ -24,7 +24,7 @@ const questionTypeInput = {
         <Input 
         type="number" 
         placeholder='Your answer...' 
-        onChange={handleChange} 
+        onChangeText={handleChange} 
         value={value} />,
     },
     radio: {
