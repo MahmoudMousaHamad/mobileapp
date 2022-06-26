@@ -47,7 +47,7 @@ export default {
 					console.log("Sending local notification...");
 					await Notifications.scheduleNotificationAsync({
 						content: {...notification, data},
-						trigger: { seconds: 2 },
+						trigger: { seconds: 1 },
 					});
 				  }
                 });
