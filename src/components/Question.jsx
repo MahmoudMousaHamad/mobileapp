@@ -1,34 +1,49 @@
 /* eslint-disable react/prop-types */
 
-import { CheckBox, IndexPath, Input, Layout, Radio, RadioGroup, Select, SelectItem, Text } from '@ui-kitten/components';
-
+import { CheckBox, Datepicker, IndexPath, Input, Layout, Radio, RadioGroup, Select, SelectItem, Text } from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
   
 const questionTypeInput = {
     text: {
       element: (handleChange, value = '') => 
-        <Input 
-        placeholder='Your answer...' 
-        onChangeText={handleChange} 
-        value={value} />,
+        <Input
+          size='large'
+          placeholder='Your answer...' 
+          onChangeText={handleChange} 
+          value={value.toString()} />,
     },
     textarea: {
       element: (handleChange, value) => 
         <Input 
-        placeholder='Your answer...' 
-        multiline={true} 
-        onChangeText={handleChange} 
-        value={value} />,
+          placeholder='Your answer...' 
+          multiline={true} 
+          onChangeText={handleChange} 
+          value={value} />,
     },
     number: {
       element: (handleChange, value) => 
         <Input 
-        type="number" 
-        placeholder='Your answer...' 
-        onChangeText={handleChange} 
-        value={value} />,
+          type="number" 
+          placeholder='Your answer...' 
+          onChangeText={handleChange} 
+          value={value} />,
+    },
+    date: {
+      element: (handleChange, value = new Date()) => {
+        // const date = new Date(value);
+        // const showDate = typeof value === "string" ? 
+        //   new Date(date.valueOf() + 24*60*60*2)
+        //   : value;
+        // console.log(showDate.getFullYear);
+        return (
+          <Datepicker 
+            date={value} 
+            onSelect={handleChange} />
+        );
+      }
     },
     radio: {
-      element: (options, handleChange, index = 0) =>
+      element: (options, handleChange, index) =>
         <RadioGroup
             selectedIndex={index}
             onChange={handleChange}>
@@ -41,10 +56,12 @@ const questionTypeInput = {
         
     },
     select: {
-      element: (options, handleChange, index = new IndexPath(0)) => 
+      element: (options, handleChange, index = null) => 
         <Select 
-            selectedIndex={index}
-            onSelect={index => handleChange(index.row)}>
+            selectedIndex={new IndexPath(index)}
+            onSelect={index => handleChange(index.row)} 
+            value={index ? options[index] : "Select an option..."}
+            size="large">
             { options.map((option, index) => <SelectItem key={index} title={option} /> ) }
         </Select>
     },
@@ -75,12 +92,28 @@ export default ({ question, handleChange, answer }) => {
     const InputElement = constructInput(type, options, handleChange, answer);
   
     return (
-      <Layout>
-        <Text>{text}</Text>
+      <Layout style={styles.container}>
+        <Text category='label' style={styles.text}>{text}</Text>
         <Layout>
             {InputElement}
         </Layout>
       </Layout>
     );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    minWidth: 200,
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  input: {
+    fontSize: 20,
+    lineHeight: 2,
+  }
+});
   
