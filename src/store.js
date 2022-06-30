@@ -6,7 +6,7 @@ import socketIOClient from "socket.io-client";
 import * as Actions from "./actions/data";
 import reducer from "./reducers";
 import config from "./config";
-import { SOCKET_SEND_DATA } from "./actions/types";
+import { LOGIN_SUCCESS, LOGOUT, SOCKET_SEND_DATA } from "./actions/types";
 import secureStore from "./secureStore";
 import Socket from './Socket';
 
@@ -14,28 +14,37 @@ let socket;
 
 const SocketMiddleware = (store) => (next) => (action) => {
   const { channel, payload } = action;
-  if (socket) {
     switch (action.type) {
       case SOCKET_SEND_DATA:
-        console.log(
-          "Sending data over socket channel.",
-          "Channel:",
-          channel,
-          "Payload:",
-          payload
-        );
-        if (payload || payload === false || payload === 0) {
-          socket.emit(channel, payload);
+        if (socket) {
+          console.log(
+            "Sending data over socket channel.",
+            "Channel:",
+            channel,
+            "Payload:",
+            payload
+          );
+          if (payload || payload === false || payload === 0) {
+            socket.emit(channel, payload);
+          } else {
+            throw new Error("Not sending to server because payload is null or undefined...", payload);
+          }
         } else {
-          throw new Error("Not sending to server because payload is null or undefined...", payload);
+          console.log("Socket is null");
+        }
+        break;
+      case LOGIN_SUCCESS:
+        console.log("Setting up socket.");
+        socket = Socket.connect(config.SERVER_ENDPOINT, store);
+        break;
+     case LOGOUT:
+        if (socket) {
+          socket.disconnect();
         }
         break;
       default:
         break;
     }
-  } else {
-    throw Error("Socket is null");
-  }
 
   return next(action);
 };
@@ -43,8 +52,9 @@ const SocketMiddleware = (store) => (next) => (action) => {
 
 const store = createStore(reducer, applyMiddleware(SocketMiddleware, thunk));
 
-// startSocket(store);
-socket = Socket.connect(config.SERVER_ENDPOINT, store);
+if (store.getState().auth.isLoggedIn) {
+  socket = Socket.connect(config.SERVER_ENDPOINT, store);
+}
 
 export default store;
 
