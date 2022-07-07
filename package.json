@@ -1,8 +1,8 @@
 {
   "name": "mobileapp",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start --lan",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -12,7 +12,7 @@
     "@eva-design/eva": "^2.1.1",
     "@expo/ngrok": "^2.5.0",
     "@react-native-async-storage/async-storage": "~1.17.3",
-    "@react-native-community/datetimepicker": "^6.1.4",
+    "@react-native-community/datetimepicker": "6.1.2",
     "@react-native-picker/picker": "2.4.0",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
@@ -24,7 +24,7 @@
     "expo-constants": "~13.1.1",
     "expo-dev-client": "~1.0.0",
     "expo-device": "~4.2.0",
-    "expo-notifications": "~0.15.3",
+    "expo-notifications": "~0.15.4",
     "expo-permissions": "~13.2.0",
     "expo-secure-store": "~11.2.0",
     "expo-splash-screen": "~0.15.1",
