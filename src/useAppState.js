@@ -17,7 +17,7 @@ export default () => {
 
   const handleAppStateChange = nextAppState => {
     if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground!');
+      console.log('App has come to the foreground.');
     }
 
     appState.current = nextAppState;

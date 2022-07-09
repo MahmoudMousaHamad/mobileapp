@@ -8,16 +8,17 @@ import {
     Question
 } from "./screens/index";
 import { useSelector } from "react-redux";
+import secureStore from "./secureStore";
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const { isLoggedIn } = useSelector((state) => state.auth);
-  
+  const auth = useSelector((state) => state.auth);
+
   return (
     <NavigationContainer>
       <Tab.Navigator>
-              {isLoggedIn ? (
+              {auth?.isLoggedIn ? (
                 <>
                   <Tab.Screen name="Question" component={Question} />
                   <Tab.Screen name="Profile" component={Profile} />

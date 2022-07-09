@@ -6,13 +6,15 @@ import socketIOClient from "socket.io-client";
 import * as Actions from "./actions/data";
 import reducer from "./reducers";
 import config from "./config";
-import { LOGIN_SUCCESS, LOGOUT, SOCKET_SEND_DATA } from "./actions/types";
+import { LOGIN_SUCCESS, LOGOUT, ME, SOCKET_SEND_DATA } from "./actions/types";
 import secureStore from "./secureStore";
 import Socket from './Socket';
+import { getUser } from "./Utils";
 
-let socket;
+let socket = null;
 
 const SocketMiddleware = (store) => (next) => (action) => {
+  console.log(action);
   const { channel, payload } = action;
     switch (action.type) {
       case SOCKET_SEND_DATA:
@@ -34,8 +36,10 @@ const SocketMiddleware = (store) => (next) => (action) => {
         }
         break;
       case LOGIN_SUCCESS:
-        console.log("Setting up socket.");
-        socket = Socket.connect(config.SERVER_ENDPOINT, store);
+        if (!socket) {
+          console.log("Setting up socket.");
+          socket = Socket.connect(config.SERVER_ENDPOINT, store);
+        }
         break;
      case LOGOUT:
         if (socket) {
@@ -49,12 +53,17 @@ const SocketMiddleware = (store) => (next) => (action) => {
   return next(action);
 };
 
+const getUserAndConnectToSocket = async (dispatch, getState) => {
+  const user =  await getUser();
+  if (user) {
+    socket = Socket.connect(config.SERVER_ENDPOINT, store);
+  }
+  dispatch({ type: ME, payload: user });
+};
 
 const store = createStore(reducer, applyMiddleware(SocketMiddleware, thunk));
 
-if (store.getState().auth.isLoggedIn) {
-  socket = Socket.connect(config.SERVER_ENDPOINT, store);
-}
+store.dispatch(getUserAndConnectToSocket);
 
 export default store;
 

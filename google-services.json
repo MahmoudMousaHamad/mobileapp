@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "604742613625",
-    "project_id": "jobapplier-ee7d2",
-    "storage_bucket": "jobapplier-ee7d2.appspot.com"
+    "project_number": "553378665672",
+    "project_id": "jobapplier",
+    "storage_bucket": "jobapplier.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:604742613625:android:63625b509acf53792bb2a8",
+        "mobilesdk_app_id": "1:553378665672:android:a6c27aa2273a60b7aac1fd",
         "android_client_info": {
           "package_name": "com.jobapplier.androidapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "604742613625-ugeja445mlbds9kaf8lv58v272h1tn33.apps.googleusercontent.com",
+          "client_id": "553378665672-d7j3kq13ifvjl4htu3bdnj56quooj8nr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAwzsL_CjsOVb_xOzWthc4NsSAEz7nJLeE"
+          "current_key": "AIzaSyCApa_775zEInbT4S3FpSevii9ko8B1yOw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "604742613625-ugeja445mlbds9kaf8lv58v272h1tn33.apps.googleusercontent.com",
+              "client_id": "553378665672-d7j3kq13ifvjl4htu3bdnj56quooj8nr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

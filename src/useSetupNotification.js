@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 
 import { setPushToken } from './actions/auth';
 import { gotData } from './actions/data';
+import secureStore from './secureStore';
+import { getUser } from './Utils';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -15,12 +17,14 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function useSetupNotification(user) {
+export default function useSetupNotification() {
   const notificationListener = useRef();
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function registerForPushNotificationsAsync() {
+      const user = await getUser();
+      
       if (Device.isDevice) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
@@ -33,13 +37,12 @@ export default function useSetupNotification(user) {
           return;
         }
         const token = (await Notifications.getExpoPushTokenAsync()).data;
-
         dispatch(setPushToken(user.id, token))
           .then(() => {
-            console.log("Push token set successfully.");
+            console.log("Push token set successfully:", token);
           })
           .catch(e => {
-            console.log("Push token set failed.");
+            console.log("Push token set failed.", e);
           });
       } else {
         alert('Must use physical device for Push Notifications');
@@ -55,7 +58,7 @@ export default function useSetupNotification(user) {
       }
     }
     
-    user && registerForPushNotificationsAsync();
+    registerForPushNotificationsAsync();
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       const { data: { name } } = notification.request.content;
@@ -68,5 +71,5 @@ export default function useSetupNotification(user) {
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
     };
-  }, [user]);
+  }, []);
 }

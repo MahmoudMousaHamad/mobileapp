@@ -6,13 +6,10 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  ME,
 } from '../actions/types';
 
-
-const user = secureStore.get('user');
-const initialState = user
-? { isLoggedIn: true, user }
-: { isLoggedIn: false, user: null };
+const initialState = { user: null, isLoggedIn: false };
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
@@ -45,6 +42,12 @@ export default function (state = initialState, action) {
         isLoggedIn: false,
         user: null,
       };
+    case ME:
+      return {
+        ...state,
+        isLoggedIn: action.payload ? true : false,
+        user: action.payload,
+      }
     default:
       return state;
   }

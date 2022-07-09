@@ -1,4 +1,4 @@
-import {connect} from "socket.io-client";
+import {connect, io} from "socket.io-client";
 import * as Notifications from 'expo-notifications';
 
 import * as Actions from "./actions/data";
@@ -15,7 +15,9 @@ export default {
 			this.socket = null;
 		}
 
-		this.socket = connect(SERVER_ENDPOINT, {
+		this.socket = io(SERVER_ENDPOINT, {
+			transports: ['websocket'], 
+			upgrade: false,
 			'reconnection': true,
             'reconnectionDelay': 5000,
             'reconnectionAttempts': Infinity,
@@ -24,15 +26,15 @@ export default {
 		this.socket.on('connect', async () => {
 			this.isConnected = true;
 
-            const user = JSON.parse(await secureStore.get('user'));
-            store.dispatch(Actions.sendData("authentication", {user, source: 'mobile'}));
+            const user = store.getState().auth.user;
+            store.dispatch(Actions.sendData("authentication", { user, source: 'mobile' }));
 			// this.socket.on('authenticated', function() {});
 
 			const channels = [
 				{
 					channel: "question",
 					notification: {
-						title: "(LOCAL) A question needs your attention!",
+						title: "A question needs your attention!",
 						body: "Tab to answer."
 					}
 				}
@@ -58,15 +60,6 @@ export default {
 		this.socket.on('disconnect', () => {
             console.log("Socket disconnected");
 			this.isConnected = false;
-			// this.interval = setInterval(() => {
-			// 	if (this.isConnected) {
-            //         console.log("Connected back to the server.");
-			// 		clearInterval(this.interval);
-			// 		this.interval = null;
-			// 		return;
-			// 	}
-			// 	this.connect();
-			// }, 5000);
 		});
 
 		return this.socket;

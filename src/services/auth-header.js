@@ -1,4 +1,4 @@
-import secureStore from '../secureStore';
+import { getUser } from '../Utils';
 
 /* 
     Return auth header to access protected resources on the server.
@@ -6,7 +6,7 @@ import secureStore from '../secureStore';
     Otherwise, return an empty object.
 */
 export default async function authHeader() {
-    const user = JSON.parse(await secureStore.get('user'));
+    const user = await getUser();
     if (user && user.token) {
       return { 'x-access-token': user.token };
     } else {
