@@ -1,3 +1,5 @@
+import 'expo-asset';
+import * as Updates from 'expo-updates';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -8,9 +10,14 @@ import {
     Question
 } from "./screens/index";
 import { useSelector } from "react-redux";
-import secureStore from "./secureStore";
 
 const Tab = createBottomTabNavigator();
+
+// Updates.fetchUpdateAsync().then((result) => {
+//   console.log("Update fetch result", result);
+//   Updates.reloadAsync().then(console.log).catch(console.log);
+
+// }).catch(console.log);
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
