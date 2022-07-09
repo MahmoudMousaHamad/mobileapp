@@ -6,26 +6,19 @@ import socketIOClient from "socket.io-client";
 import * as Actions from "./actions/data";
 import reducer from "./reducers";
 import config from "./config";
-import { LOGIN_SUCCESS, LOGOUT, ME, SOCKET_SEND_DATA } from "./actions/types";
+import { APP_STATE_CHANGE, LOGIN_SUCCESS, LOGOUT, ME, SOCKET_SEND_DATA } from "./actions/types";
 import secureStore from "./secureStore";
 import Socket from './Socket';
 import { getUser } from "./Utils";
+import { useStore } from "react-redux";
 
-let socket = null;
+let socket;
 
 const SocketMiddleware = (store) => (next) => (action) => {
-  console.log(action);
   const { channel, payload } = action;
     switch (action.type) {
       case SOCKET_SEND_DATA:
         if (socket) {
-          console.log(
-            "Sending data over socket channel.",
-            "Channel:",
-            channel,
-            "Payload:",
-            payload
-          );
           if (payload || payload === false || payload === 0) {
             socket.emit(channel, payload);
           } else {
@@ -36,12 +29,11 @@ const SocketMiddleware = (store) => (next) => (action) => {
         }
         break;
       case LOGIN_SUCCESS:
-        if (!socket) {
-          console.log("Setting up socket.");
-          socket = Socket.connect(config.SERVER_ENDPOINT, store);
-        }
+        console.log("Setting up socket.");
+        socket = Socket.connect(config.SERVER_ENDPOINT, store);
         break;
      case LOGOUT:
+        console.log("Socket is disconnecting");
         if (socket) {
           socket.disconnect();
         }
@@ -53,17 +45,16 @@ const SocketMiddleware = (store) => (next) => (action) => {
   return next(action);
 };
 
-const getUserAndConnectToSocket = async (dispatch, getState) => {
-  const user =  await getUser();
-  if (user) {
-    socket = Socket.connect(config.SERVER_ENDPOINT, store);
-  }
-  dispatch({ type: ME, payload: user });
-};
-
 const store = createStore(reducer, applyMiddleware(SocketMiddleware, thunk));
 
-store.dispatch(getUserAndConnectToSocket);
+store.dispatch(async (dispatch) => {
+  const user =  await getUser();
+  if (user) {
+    console.log("Socket is connected:", Socket.isConnected);
+    socket = Socket.connect(config.SERVER_ENDPOINT, store);
+    dispatch({ type: ME, payload: user });
+  }
+});
 
 export default store;
 

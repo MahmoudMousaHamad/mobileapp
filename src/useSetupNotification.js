@@ -39,7 +39,7 @@ export default function useSetupNotification() {
         const token = (await Notifications.getExpoPushTokenAsync()).data;
         dispatch(setPushToken(user.id, token))
           .then(() => {
-            console.log("Push token set successfully:", token);
+            console.log("Push token set successfully");
           })
           .catch(e => {
             console.log("Push token set failed.", e);

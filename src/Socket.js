@@ -2,7 +2,6 @@ import {connect, io} from "socket.io-client";
 import * as Notifications from 'expo-notifications';
 
 import * as Actions from "./actions/data";
-import secureStore from "./secureStore";
 
 export default {
 	isConnected: false,
@@ -15,26 +14,23 @@ export default {
 			this.socket = null;
 		}
 
-		this.socket = io(SERVER_ENDPOINT, {
-			transports: ['websocket'], 
-			upgrade: false,
-			'reconnection': true,
-            'reconnectionDelay': 5000,
-            'reconnectionAttempts': Infinity,
-		});
+		this.socket = connect(SERVER_ENDPOINT, {
+			reconnection: true,
+			reconnectionDelay: 5000,
+			reconnectionAttempts: Infinity,
+		  });
 
 		this.socket.on('connect', async () => {
 			this.isConnected = true;
 
             const user = store.getState().auth.user;
             store.dispatch(Actions.sendData("authentication", { user, source: 'mobile' }));
-			// this.socket.on('authenticated', function() {});
 
 			const channels = [
 				{
 					channel: "question",
 					notification: {
-						title: "A question needs your attention!",
+						title: "A question needs your attention",
 						body: "Tab to answer."
 					}
 				}
@@ -63,5 +59,8 @@ export default {
 		});
 
 		return this.socket;
-	}
+	},
+	disconnect() {
+		this.socket?.disconnect();
+	},
 }

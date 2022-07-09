@@ -10,7 +10,6 @@ import useAppState from '../useAppState';
 
 export default () => {
   const { question } = useSelector((state) => state.data);
-  const { state } = useSelector((state) => state.appState);
   const [answer, setAnswer] = useState();
   const dispatch = useDispatch();
 
@@ -29,7 +28,7 @@ export default () => {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' }}>
-      {!question && <Text>The question from your job application will show up here.</Text>}
+      {!question && <Text>If a questoin needs your attention, it will show up here</Text>}
       {question && (
       <>
         <Question question={question} handleChange={setAnswer} answer={answer} />
