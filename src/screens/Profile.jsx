@@ -2,10 +2,10 @@ import React from "react";
 import { Text } from '@ui-kitten/components';
 import { Button } from "react-native";
 import { logout } from "../actions/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Profile = ( { navigation } ) => {
-  const user = {};
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
   const logoutUser = async () => {

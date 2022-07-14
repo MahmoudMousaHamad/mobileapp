@@ -18,24 +18,24 @@ const SocketMiddleware = (store) => (next) => (action) => {
   const { channel, payload } = action;
     switch (action.type) {
       case SOCKET_SEND_DATA:
-        if (socket) {
+        if (Socket.isConnected) {
           if (payload || payload === false || payload === 0) {
-            socket.emit(channel, payload);
+            Socket.socket.emit(channel, payload);
           } else {
             throw new Error("Not sending to server because payload is null or undefined...", payload);
           }
         } else {
-          console.log("Socket is null");
+          console.log("Socket is null/not connected");
         }
         break;
       case LOGIN_SUCCESS:
         console.log("Setting up socket.");
-        socket = Socket.connect(config.SERVER_ENDPOINT, store);
+        Socket.connect(config.SERVER_ENDPOINT, store);
         break;
      case LOGOUT:
         console.log("Socket is disconnecting");
-        if (socket) {
-          socket.disconnect();
+        if (Socket.isConnected) {
+          Socket.disconnect();
         }
         break;
       default:
@@ -50,9 +50,10 @@ const store = createStore(reducer, applyMiddleware(SocketMiddleware, thunk));
 store.dispatch(async (dispatch) => {
   const user =  await getUser();
   if (user) {
-    console.log("Socket is connected:", Socket.isConnected);
-    socket = Socket.connect(config.SERVER_ENDPOINT, store);
     dispatch({ type: ME, payload: user });
+    if (!Socket.isConnected) {
+      Socket.connect(config.SERVER_ENDPOINT, store);
+    }
   }
 });
 

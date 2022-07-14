@@ -1,17 +1,26 @@
 import { Button } from '@ui-kitten/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { clearData, sendData } from '../actions/data';
 
 import useSetupNotification from '../useSetupNotification'; 
 import Question from '../components/Question';
 import useAppState from '../useAppState';
+import Socket from '../Socket';
+import config from '../config';
 
 export default () => {
   const { question } = useSelector((state) => state.data);
   const [answer, setAnswer] = useState();
   const dispatch = useDispatch();
+  const store = useStore();
+
+  useEffect(() => {
+    if (!Socket.isConnected) {
+      Socket.connect(config.SERVER_ENDPOINT, store);
+    }
+  });
 
   useSetupNotification();
   useAppState();

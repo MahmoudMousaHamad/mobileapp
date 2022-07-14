@@ -1,4 +1,4 @@
-import {connect, io} from "socket.io-client";
+import io from "socket.io-client";
 import * as Notifications from 'expo-notifications';
 
 import * as Actions from "./actions/data";
@@ -14,17 +14,33 @@ export default {
 			this.socket = null;
 		}
 
-		this.socket = connect(SERVER_ENDPOINT, {
+		this.socket = io(SERVER_ENDPOINT, {
+			autoConnect: false,
 			reconnection: true,
 			reconnectionDelay: 5000,
 			reconnectionAttempts: Infinity,
-		  });
+		});
+
+		this.socket.auth = {
+			user: store.getState().auth.user,
+			source: "mobile",
+		};
+
+		this.socket.connect();
+
+		this.socket.onAny((event, ...args) => {
+			console.log(event, args);
+		});
+	
+		this.socket.on("connect_error", (err) => {
+			console.log("Connection to server failed", err);
+		});
 
 		this.socket.on('connect', async () => {
 			this.isConnected = true;
 
-            const user = store.getState().auth.user;
-            store.dispatch(Actions.sendData("authentication", { user, source: 'mobile' }));
+            // const user = store.getState().auth.user;
+            // store.dispatch(Actions.sendData("authentication", { user, source: 'mobile' }));
 
 			const channels = [
 				{
