@@ -13,6 +13,12 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./jobapplier-google-private-key.json",
+        "track": "internal",
+        "releaseStatus": "draft"
+      }
+    }
   }
 }

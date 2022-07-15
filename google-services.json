@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:553378665672:android:a6c27aa2273a60b7aac1fd",
+        "mobilesdk_app_id": "1:553378665672:android:65a215cd14ba2fc5aac1fd",
         "android_client_info": {
-          "package_name": "com.jobapplier.androidapp"
+          "package_name": "com.jobapplier.app"
         }
       },
       "oauth_client": [
@@ -20,7 +20,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCApa_775zEInbT4S3FpSevii9ko8B1yOw"
+          "current_key": "AIzaSyA6kTBHuvVgPjFJY9nOLjcv9jDvy7STYqw"
         }
       ],
       "services": {

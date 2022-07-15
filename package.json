@@ -1,6 +1,6 @@
 {
   "name": "mobileapp",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "expo start --lan",
     "android": "expo run:android",

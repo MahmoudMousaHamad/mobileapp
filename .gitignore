@@ -10,6 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
+jobapplier-google-private-key.json
 
 # macOS
 .DS_Store
