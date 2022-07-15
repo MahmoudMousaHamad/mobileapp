@@ -11,7 +11,7 @@ async function get(key) {
 async function remove(key) {
     let result = await SecureStore.deleteItemAsync(key);
     if (result) {
-        alert("Valye deleted.");
+        alert("Value deleted.");
     } else {
         return null;
     }
