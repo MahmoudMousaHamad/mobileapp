@@ -5,8 +5,11 @@ import { StyleSheet } from 'react-native';
   
 const questionTypeInput = {
     text: {
-      element: (handleChange, value = '') => 
+      element: (handleChange, value = '', handleSubmit) => 
         <Input
+          style={{ minWidth: 200 }}
+          returnKeyType="send"
+          onSubmitEditing={handleSubmit}
           size='large'
           placeholder='Your answer...' 
           onChangeText={handleChange} 
@@ -22,7 +25,8 @@ const questionTypeInput = {
     },
     number: {
       element: (handleChange, value) => 
-        <Input 
+        <Input
+          style={{ minWidth: 200 }}
           type="number" 
           placeholder='Your answer...' 
           onChangeText={handleChange} 
@@ -85,21 +89,21 @@ const questionTypeInput = {
     },
 };
   
-function constructInput(type, options, handleChange, answer) {
+function constructInput(type, options, handleChange, answer, handleSubmit) {
     if (options === "None") {
-      return questionTypeInput[type].element(handleChange, answer);
+      return questionTypeInput[type].element(handleChange, answer, handleSubmit);
     }
-    return questionTypeInput[type].element(options, handleChange, answer);
+    return questionTypeInput[type].element(options, handleChange, answer, handleSubmit);
 }
   
-export default ({ question, handleChange, answer }) => {
+export default ({ question, handleChange, answer, handleSubmit }) => {
     const { text, type, options } = question;
     
-    const InputElement = constructInput(type, options, handleChange, answer);
+    const InputElement = constructInput(type, options, handleChange, answer, handleSubmit);
   
     return (
       <Layout style={styles.container}>
-        <Text category='label' style={styles.text}>{text}</Text>
+        <Text category='label' style={text.length > 200 ? styles.longText : styles.text}>{text}</Text>
         <Layout>
             {InputElement}
         </Layout>
@@ -112,6 +116,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     minWidth: 200,
     marginBottom: 20,
+    padding: 20
+  },
+  longText: {
+    fontSize: 16,
+    marginBottom: 10,
   },
   text: {
     fontSize: 24,
@@ -120,6 +129,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 20,
     lineHeight: 2,
+    minWidth: 200,
   }
 });
   
