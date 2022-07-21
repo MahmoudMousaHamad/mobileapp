@@ -1,0 +1,10 @@
+Google Play
+- Build:
+    - app.json AND app.config.js: increment android.versionCode
+    - app.json AND app.config.js: increment version
+    - Command: eas build --platform android
+- Submit:
+    - eas.json: check/change track and release status 
+    - Command: eas submit -p android --latest
+    - If release status is draft, you'll have to go to Google Play console to submit it manually.
+

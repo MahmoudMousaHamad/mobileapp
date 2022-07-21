@@ -16,7 +16,7 @@
     "production": {
       "android": {
         "serviceAccountKeyPath": "./jobapplier-google-private-key.json",
-        "track": "internal",
+        "track": "beta",
         "releaseStatus": "draft"
       }
     }
