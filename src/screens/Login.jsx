@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Input, Layout, Button, Text } from '@ui-kitten/components';
+import { Input, Layout, Button, Text, Icon } from '@ui-kitten/components';
 import { useForm, Controller } from "react-hook-form";
 
 import { login } from "../actions/auth";
@@ -25,28 +25,39 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <Layout>
+    <Layout style={{ 
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center", 
+				padding: 50, 
+				height: "100%" 
+			}}>
         <Controller
           control={control}
           rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input 
-              placeholder="Email"
-              type="email" 
+            <Input
+              style={{ marginBottom: 10 }}
+							placeholder="your@email.com"
+              label="Email"
+              type="email"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} />
           )}
           name="email"
         />
-        
+
         <Controller
           control={control}
           rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input 
+            <Input
+              style={{ marginBottom: 10 }}
               placeholder="Password"
-              type="password" 
+              type="password"
+              label="Password"
+              secureTextEntry={true}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} />

@@ -32,13 +32,21 @@ const Register = () => {
   }
   
   return (
-    <Layout>
+    <Layout style={{ 
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center", 
+      padding: 50, 
+      height: "100%" 
+    }}>
       <Controller
           control={control}
           rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input 
-              placeholder="Email"
+              style={{ marginBottom: 10 }}
+              label="Email"
+              placeholder="your@email.com"
               type="email" 
               onBlur={onBlur}
               onChangeText={onChange}
@@ -53,10 +61,13 @@ const Register = () => {
           rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input 
+              style={{ marginBottom: 10 }}
+              label="Password"
               placeholder="Password"
               type="password" 
               onBlur={onBlur}
               onChangeText={onChange}
+              secureTextEntry={true}
               value={value} />
           )}
           name="password"
@@ -70,6 +81,9 @@ const Register = () => {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input 
+              style={{ marginBottom: 10 }}
+              label="Repeat Password"
+              secureTextEntry={true}
               placeholder="Repeat password"
               type="password"
               onBlur={onBlur}
@@ -83,7 +97,7 @@ const Register = () => {
         {errors.repeat_password && <Text>{errors.repeat_password.message}</Text>}
 
 
-      <Button type="submit" onPress={handleSubmit(handleRegister)}>Login</Button>
+      <Button type="submit" onPress={handleSubmit(handleRegister)}>Register</Button>
     </Layout>
   );
 };

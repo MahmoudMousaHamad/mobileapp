@@ -1,7 +1,7 @@
 const LOCAL_IP_ADDRESS = require("ip").address().toString();
 
 export default {
-    name: 'mobileapp',
+    name: 'JobApplier - Mobile',
     version: '1.0.3',
     owner: "mahmoudmousahamad",
     extra: {

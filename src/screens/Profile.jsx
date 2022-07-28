@@ -1,6 +1,5 @@
 import React from "react";
-import { Text } from '@ui-kitten/components';
-import { Button } from "react-native";
+import { Button, Layout, Text } from '@ui-kitten/components';
 import { logout } from "../actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,15 +12,15 @@ const Profile = ( { navigation } ) => {
   };
 
   return (
-    <>
-      <Text>Email: {user.email}</Text>
-      <Text>ID: {user.id}</Text>
-      <Text>
-        Token: {user.token?.substring(0, 20)} ...{" "}
-        {user.token?.substr(user.token.length - 20)} 
-      </Text>
-      <Button title="Logout" onPress={logoutUser}/>
-    </>
+    <Layout style={{ 
+      display: "flex",
+      justifyContent: "center", 
+      padding: 50, 
+      height: "100%" 
+    }}>
+      <Text style={{ marginBottom: 10 }}><Text style={{ fontWeight: "bold" }}>Email:</Text> {user.email}</Text>
+      <Button onPress={logoutUser}>Logout</Button>
+    </Layout>
   );
 };
 export default Profile;

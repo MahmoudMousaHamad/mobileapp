@@ -39,10 +39,13 @@ const questionTypeInput = {
         //   new Date(date.valueOf() + 24*60*60*2)
         //   : value;
         // console.log(showDate.getFullYear);
+        const now = new Date();
+        const max = new Date(now.getFullYear() + 100, 12, 31);
         return (
           <Datepicker 
-            date={value} 
-            onSelect={handleChange} />
+            date={value}
+            onSelect={handleChange}
+            max={max} />
         );
       }
     },
@@ -115,8 +118,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     minWidth: 200,
-    marginBottom: 20,
-    padding: 20
+    marginBottom: 10,
   },
   longText: {
     fontSize: 16,
