@@ -5,6 +5,22 @@ import { useForm, Controller } from "react-hook-form";
 
 import { register } from "../actions/auth";
 
+const controls = [
+  { label: "Email", name: "email", placeholder: "your@email.com", },
+  { label: "First Name", name: "firstName", placeholder: "Your first name", },
+  { label: "Last Name", name: "lastName", placeholder: "Your last name", },
+  { label: "Password", name: "password", placeholder: "Password" },
+  { 
+    label: "Repeat Password", 
+    name: "repeatPassword", 
+    placeholder: "Password", 
+    rules: {
+      validate: value =>
+              value === password.current || "The passwords do not match"
+    }
+  },
+];
+
 const Register = () => {
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const password = useRef({});
@@ -15,9 +31,9 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const handleRegister = (data) => {
-    const {email, password} = data;
+    const {email, password, firstName, lastName} = data;
 
-    dispatch(register(email, password))
+    dispatch(register(email, firstName, lastName, password))
       .then(() => {
         console.log("Registration successful!");
       })
@@ -39,7 +55,30 @@ const Register = () => {
       padding: 50, 
       height: "100%" 
     }}>
-      <Controller
+      {controls.map((c) => {
+        return (
+          <Layout style={{ width: "100%", marginBottom: 10 }} key={c.name}>
+            <Controller
+              control={control}
+              rules={{ required: true, ...c?.rules }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input 
+                  style={{ marginBottom: 10 }}
+                  label={c.label}
+                  placeholder={c.placeholder}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value} />
+              )}
+              name={c.name}
+            />
+            {errors[c.name] && <Text>Please check your {c.label}</Text>}
+          </Layout>
+        );
+      })}
+
+      { /*
+        <Controller
           control={control}
           rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -55,6 +94,38 @@ const Register = () => {
           name="email"
         />
         {errors.email && <Text>Please check your email</Text>}
+        
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input 
+              style={{ marginBottom: 10 }}
+              label="First Name"
+              placeholder="Your first name..."
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value} />
+          )}
+          name="firstName"
+        />
+        {errors.firstName && <Text>Please check your first name</Text>}
+        
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input 
+              style={{ marginBottom: 10 }}
+              label="First Name"
+              placeholder="Your first name..."
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value} />
+          )}
+          name="firstName"
+        />
+        {errors.firstName && <Text>Please check your first name</Text>}
         
         <Controller
           control={control}
@@ -90,12 +161,13 @@ const Register = () => {
               onChangeText={onChange}
               value={value} />
           )}
-          name="repeat_password"
+          name="repeatPassword"
         />
 
         {errors.password && <Text>Please check your password</Text>}
-        {errors.repeat_password && <Text>{errors.repeat_password.message}</Text>}
-
+        {errors.repeatPassword && <Text>{errors.repeatPassword.message}</Text>}
+        */
+      }
 
       <Button type="submit" onPress={handleSubmit(handleRegister)}>Register</Button>
     </Layout>

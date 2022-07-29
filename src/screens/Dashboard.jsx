@@ -1,6 +1,6 @@
 import { Layout, Text, Toggle } from "@ui-kitten/components";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sendData } from "../actions/data";
 
 const Dashboard = () => {
