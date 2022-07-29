@@ -49,20 +49,26 @@ export default {
 						title: "A question needs your attention",
 						body: "Tab to answer."
 					}
+				}, 
+				{
+					channel: "bot-status-change",
+					notification: null,
 				}
-			]
+			];
 
-            channels.forEach(({channel, notification}) => {
+            channels.forEach(({ channel, notification }) => {
                 this.socket.on(channel, async (data) => {
                   store.dispatch(Actions.gotData(data, channel));
-				  const { appState: { state } } = store.getState();
-				  console.log("APP STATE: ", state);
-				  if (state === "background") {
-					console.log("Sending local notification...");
-					await Notifications.scheduleNotificationAsync({
-						content: {...notification, data},
-						trigger: { seconds: 1 },
-					});
+				  if (notification) {
+					const { appState: { state } } = store.getState();
+					console.log("APP STATE: ", state);
+					if (state === "background") {
+						console.log("Sending local notification...");
+						await Notifications.scheduleNotificationAsync({
+							content: {...notification, data},
+							trigger: { seconds: 1 },
+						});
+					}
 				  }
                 });
             });
