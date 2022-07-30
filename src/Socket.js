@@ -53,6 +53,10 @@ export default {
 				{
 					channel: "bot-status-change",
 					notification: null,
+				}, 
+				{
+					channel: "application-counts",
+					notification: null,
 				}
 			];
 

@@ -4,21 +4,13 @@ import { Input, Layout, Button, Text } from '@ui-kitten/components';
 import { useForm, Controller } from "react-hook-form";
 
 import { register } from "../actions/auth";
+import { ScrollView } from "react-native";
 
 const controls = [
   { label: "Email", name: "email", placeholder: "your@email.com", },
   { label: "First Name", name: "firstName", placeholder: "Your first name", },
   { label: "Last Name", name: "lastName", placeholder: "Your last name", },
-  { label: "Password", name: "password", placeholder: "Password" },
-  { 
-    label: "Repeat Password", 
-    name: "repeatPassword", 
-    placeholder: "Password", 
-    rules: {
-      validate: value =>
-              value === password.current || "The passwords do not match"
-    }
-  },
+  { label: "Password", name: "password", placeholder: "Password", password: true },
 ];
 
 const Register = () => {
@@ -48,12 +40,12 @@ const Register = () => {
   }
   
   return (
-    <Layout style={{ 
+    <ScrollView contentContainerStyle={{ 
       display: "flex",
       alignItems: "center",
       justifyContent: "center", 
-      padding: 50, 
-      height: "100%" 
+      padding: 50,
+      backgroundColor: "white" 
     }}>
       {controls.map((c) => {
         return (
@@ -68,6 +60,7 @@ const Register = () => {
                   placeholder={c.placeholder}
                   onBlur={onBlur}
                   onChangeText={onChange}
+                  secureTextEntry={c.password}
                   value={value} />
               )}
               name={c.name}
@@ -76,6 +69,29 @@ const Register = () => {
           </Layout>
         );
       })}
+
+
+        <Controller
+          control={control}
+          rules={{ 
+            validate: value =>
+              value === password.current || "The passwords do not match"
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input 
+              style={{ marginBottom: 10 }}
+              label="Repeat Password"
+              secureTextEntry={true}
+              placeholder="Repeat password"
+              type="password"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value} />
+          )}
+          name="repeatPassword"
+        />
+        {errors.password && <Text>Please check your password</Text>}
+        {errors.repeatPassword && <Text>{errors.repeatPassword.message}</Text>}
 
       { /*
         <Controller
@@ -143,34 +159,11 @@ const Register = () => {
           )}
           name="password"
         />
-
-        <Controller
-          control={control}
-          rules={{ 
-            validate: value =>
-              value === password.current || "The passwords do not match"
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input 
-              style={{ marginBottom: 10 }}
-              label="Repeat Password"
-              secureTextEntry={true}
-              placeholder="Repeat password"
-              type="password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value} />
-          )}
-          name="repeatPassword"
-        />
-
-        {errors.password && <Text>Please check your password</Text>}
-        {errors.repeatPassword && <Text>{errors.repeatPassword.message}</Text>}
         */
       }
 
       <Button type="submit" onPress={handleSubmit(handleRegister)}>Register</Button>
-    </Layout>
+    </ScrollView>
   );
 };
 

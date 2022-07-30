@@ -4,9 +4,11 @@ import secureStore from '../secureStore';
 import config from '../config';
 import authHeader from "./auth-header";
 
-const register = (email, password) => {
+const register = (email, firstName, lastName, password) => {
   return axios.post(config.AUTH_API_URL + "signup", {
     email,
+    firstName, 
+    lastName,
     password,
   });
 };

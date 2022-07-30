@@ -22,7 +22,7 @@ const SocketMiddleware = (store) => (next) => (action) => {
           if (payload || payload === false || payload === 0) {
             Socket.socket.emit(channel, payload);
           } else {
-            throw new Error("Not sending to server because payload is null or undefined...", payload);
+            Socket.socket.emit(channel);
           }
         } else {
           console.log("Socket is null/not connected");
