@@ -63,6 +63,12 @@ export default {
             channels.forEach(({ channel, notification }) => {
                 this.socket.on(channel, async (data) => {
                   store.dispatch(Actions.gotData(data, channel));
+				  console.log(
+						"Got data from server on channel:",
+						channel,
+						", and data:",
+						data
+					);
 				  if (notification) {
 					const { appState: { state } } = store.getState();
 					console.log("APP STATE: ", state);

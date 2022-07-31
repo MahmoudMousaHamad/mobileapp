@@ -27,7 +27,7 @@ export default () => {
   useAppState();
 
   const handleSubmit = () => {
-    if (!answer) {
+    if (!answer && answer !== 0) {
       setError("Please answer the question");
       return;
     }

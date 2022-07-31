@@ -16,7 +16,7 @@ const Dashboard = () => {
     useEffect(() => {
         console.log("Getting application counts");
         dispatch(sendData("get-application-counts"));
-    }, [checked]);
+    }, []);
 
     useEffect(() => {
         setChecked(botStatus === "start");
@@ -49,21 +49,17 @@ const Dashboard = () => {
                 <Toggle checked={checked} onChange={onCheckedChange}></Toggle>
             </Layout>
             <Layout style={{ marginBottom: 0 }}>
-                {/* {counts && <Text category="h5">Submissions: {counts?.count} / {counts?.limit}</Text>}
-                <Layout style={{display: "flex", alignItems: "stretch"}}>
-                    <Layout style={{ minWidth: 50, backgroundColor: "black" }}>
-                        
-                    </Layout>
-                </Layout> */}
 
                 <CircularProgress
                     value={counts?.count}
                     maxValue={counts?.limit}
                     title={` / ${counts?.limit}`}
-                    progressValueColor="black"
+                    titleStyle={{ opacity: 0.5 }}
+                    progressValueColor="#054DA7"
                     inActiveStrokeColor="#054DA7"
-                    inActiveStrokeOpacity={0.5}
                     activeStrokeColor="#054DA7"
+                    titleColor="#054DA7"
+                    inActiveStrokeOpacity={0.5}
                     radius={100}
                     duration={2000}
                     delay={1000}
