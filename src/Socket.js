@@ -2,12 +2,13 @@ import io from "socket.io-client";
 import * as Notifications from 'expo-notifications';
 
 import * as Actions from "./actions/data";
+import config from "./config";
 
 export default {
 	isConnected: false,
 	socket: null,
 	interval: null,
-	connect(SERVER_ENDPOINT, store) {
+	connect(SERVER_ENDPOINT=config.SERVER_ENDPOINT, store) {
 		if (this.socket) {
 			this.socket.destroy();
 			delete this.socket;

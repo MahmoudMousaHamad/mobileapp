@@ -49,8 +49,7 @@ const Dashboard = () => {
                 <Toggle checked={checked} onChange={onCheckedChange}></Toggle>
             </Layout>
             <Layout style={{ marginBottom: 0 }}>
-
-                <CircularProgress
+                {counts && <CircularProgress
                     value={counts?.count}
                     maxValue={counts?.limit}
                     title={` / ${counts?.limit}`}
@@ -63,7 +62,7 @@ const Dashboard = () => {
                     radius={100}
                     duration={2000}
                     delay={1000}
-                />
+                />}
             </Layout>
         </Layout>
     );
