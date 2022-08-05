@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     minWidth: 200,
     marginBottom: 10,
+    padding: 20,
   },
   longText: {
     fontSize: 16,

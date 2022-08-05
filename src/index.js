@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
+  const { question } = useSelector((state) => state.data);
 
   return (
     <NavigationContainer>
@@ -35,6 +36,7 @@ const App = () => {
                     tabBarIcon: ({ color, size }) => (
                       <AntDesign name="questioncircle" color={color} size={size} />
                     ),
+                    [question && "tabBarBadge"]: "1",
                   }} />
                   <Tab.Screen name="Dashboard" component={Dashboard} options={{
                     tabBarLabel: 'Dashboard',
