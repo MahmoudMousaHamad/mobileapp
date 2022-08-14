@@ -1,64 +1,108 @@
-import { Button, Layout, Text } from '@ui-kitten/components';
-import { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { useDispatch, useSelector, useStore } from 'react-redux';
-import { clearData, sendData } from '../actions/data';
+/* eslint-disable react/display-name */
+import React from "react";
+import { Button, Layout, Text } from "@ui-kitten/components";
+import { useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import { clearData, sendData } from "../actions/data";
 
-import useSetupNotification from '../useSetupNotification'; 
-import Question from '../components/Question';
-import useAppState from '../useAppState';
-import Socket from '../Socket';
-import config from '../config';
+import useSetupNotification from "../useSetupNotification";
+import Question from "../components/Question";
+import useAppState from "../useAppState";
+import Socket from "../Socket";
+import config from "../config";
 
 export default () => {
-  const { question } = useSelector((state) => state.data);
-  const [answer, setAnswer] = useState();
-  const [error, setError] = useState();
-  const dispatch = useDispatch();
-  const store = useStore();
+	// const { question } = useSelector((state) => state.data);
+	const { questions } = useSelector((state) => state.data);
+	// const questions = [
+	// 	{
+	// 		text: "Question 1",
+	// 		type: "text",
+	// 		options: "None",
+	// 	},
+	// 	{
+	// 		text: "Question 2",
+	// 		type: "date",
+	// 		options: "None",
+	// 	},
+	// ];
+	const [answers, setAnswers] = useState(
+		Array(questions?.length).fill(undefined)
+	);
+	const [errors, setErrors] = useState();
+	const dispatch = useDispatch();
+	const store = useStore();
 
-  useEffect(() => {
-    if (!Socket.isConnected) {
-      Socket.connect(config.SERVER_ENDPOINT, store);
-    }
-  });
+	useEffect(() => {
+		if (!Socket.isConnected) {
+			Socket.connect(config.SERVER_ENDPOINT, store);
+		}
+	});
 
-  useSetupNotification();
-  useAppState();
+	useEffect(() => {
+		setAnswers(Array(questions?.length).fill(null));
+		setErrors();
+	}, [questions]);
 
-  const handleSubmit = () => {
-    if (!answer && answer !== 0) {
-      setError("Please answer the question");
-      return;
-    }
+	useSetupNotification();
+	useAppState();
 
-    if (error) {
-      setError();
-    }
+	function handleChange(value, index) {
+		answers[index] = value;
+		setAnswers([...answers]);
+	}
 
-    if (question.type === "date") {
-      dispatch(sendData("answer", JSON.stringify(answer).slice(1, 11)));
-    } else {
-      dispatch(sendData("answer", answer));
-    }
-    setAnswer();
-    dispatch(clearData("question"));
-  }
+	function handleSubmit() {
+		const err = answers
+			? answers?.map((answer) => !(answer || answer === 0))
+			: Array(questions?.length).fill(true);
+		if (err?.every((error) => !error)) {
+			dispatch(sendData("answers", answers));
+			dispatch(clearData("questions"));
+			setErrors(err);
+			setAnswers();
+		}
+	}
 
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-      {!question && <Text>If a questoin needs your attention, it will show up here</Text>}
-      {question && (
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}>
-        <Question  question={question} handleChange={setAnswer} answer={answer} handleSubmit={handleSubmit} />
-        <Button style={{ marginBottom: 10 }} onPress={handleSubmit}>Submit</Button>
-        {error && 
-          <Layout>
-            <Text style={{color: "red"}}>{error}</Text>
-          </Layout>
-        }
-      </ScrollView> 
-      )}
-    </View>
-  );
-}
+	return (
+		<View
+			style={{
+				flex: 1,
+				justifyContent: "center",
+				alignItems: "center",
+				backgroundColor: "white",
+			}}
+		>
+			{!questions && (
+				<Text>If a questoin needs your attention, it will show up here</Text>
+			)}
+			{questions && (
+				<ScrollView
+					contentContainerStyle={{
+						flexGrow: 1,
+						justifyContent: "center",
+						alignItems: "center",
+					}}
+				>
+					{questions.map((question, index) => (
+						<Layout key={index}>
+							<Question
+								question={question}
+								handleChange={(value) => handleChange(value, index)}
+								handleSubmit={handleSubmit}
+								answer={answers?.[index]}
+							/>
+							{errors?.[index] && (
+								<Text style={{ color: "red" }}>Please answer the question</Text>
+							)}
+						</Layout>
+					))}
+					<Button style={{ marginBottom: 10 }} onPress={handleSubmit}>
+            			Submit
+					</Button>
+				</ScrollView>
+			)}
+		</View>
+	);
+};

@@ -40,9 +40,6 @@ export default {
 		this.socket.on('connect', async () => {
 			this.isConnected = true;
 
-            // const user = store.getState().auth.user;
-            // store.dispatch(Actions.sendData("authentication", { user, source: 'mobile' }));
-
 			const channels = [
 				{
 					channel: "question",
@@ -51,6 +48,13 @@ export default {
 						body: "Tab to answer."
 					}
 				}, 
+				{
+					channel: "questions",
+					notification: {
+						title: "An application needs your attention",
+						body: "Tab to answer."
+					}
+				},
 				{
 					channel: "bot-status-change",
 					notification: null,
