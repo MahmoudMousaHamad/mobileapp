@@ -62,6 +62,10 @@ export default {
 				{
 					channel: "application-counts",
 					notification: null,
+				},
+				{
+					channel: "desktop",
+					notification: null,
 				}
 			];
 

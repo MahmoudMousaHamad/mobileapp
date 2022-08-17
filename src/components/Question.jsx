@@ -85,23 +85,27 @@ const questionTypeInput = {
 		),
 	},
 	checkbox: {
-		element: (options, handleChange, checked = []) =>
-			options.map((option, index) => (
-				<CheckBox
-					key={index}
-					checked={checked.includes(index)}
-					onChange={() => {
-						if (checked.includes(index)) {
-							checked.splice(checked.indexOf(index));
-						} else {
-							checked.push(index);
-						}
-						handleChange([...checked]);
-					}}
-				>
-					{option}
-				</CheckBox>
-			)),
+		element: (options, handleChange, checkedProp = []) => {
+			const checked = checkedProp ? checkedProp : [];
+			return (
+				options.map((option, index) => (
+					<CheckBox
+						key={index}
+						checked={checked?.includes(index)}
+						onChange={() => {
+							if (checked?.includes(index)) {
+								checked?.splice(checked.indexOf(index));
+							} else {
+								checked?.push(index);
+							}
+							handleChange([...checked]);
+						}}
+					>
+						{option}
+					</CheckBox>
+				))
+			);
+		},
 	},
 };
 

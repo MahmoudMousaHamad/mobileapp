@@ -15,20 +15,9 @@ import config from "../config";
 export default () => {
 	// const { question } = useSelector((state) => state.data);
 	const { questions } = useSelector((state) => state.data);
-	// const questions = [
-	// 	{
-	// 		text: "Question 1",
-	// 		type: "text",
-	// 		options: "None",
-	// 	},
-	// 	{
-	// 		text: "Question 2",
-	// 		type: "date",
-	// 		options: "None",
-	// 	},
-	// ];
+
 	const [answers, setAnswers] = useState(
-		Array(questions?.length).fill(undefined)
+		Array(questions?.length).fill(null)
 	);
 	const [errors, setErrors] = useState();
 	const dispatch = useDispatch();

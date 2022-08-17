@@ -1,14 +1,15 @@
 import React from "react";
 import CircularProgress from "react-native-circular-progress-indicator";
-import { Layout, Text, Toggle } from "@ui-kitten/components";
+import { Card, Layout, Text, Toggle } from "@ui-kitten/components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendData } from "../actions/data";
 
 const Dashboard = () => {
 	const { 
-		"bot-status-change": botStatus, 
-		"application-counts": counts, 
+		"bot-status-change": botStatus,
+		"application-counts": counts,
+		desktop,
 	} = useSelector((state) => state.data);
 
 	const [checked, setChecked] = useState();
@@ -39,7 +40,15 @@ const Dashboard = () => {
 			padding: 50, 
 			height: "100%" 
 		}}>
-			<Layout style={{ 
+			<Card status={desktop ? "success" : "danger"}>
+				<Text>
+					{desktop ? 
+						"JobApplier desktop is connected" : 
+						"JobApplier desktop is not connected"
+					}
+				</Text>
+			</Card>
+			{desktop && <Layout style={{ 
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center", 
@@ -48,7 +57,7 @@ const Dashboard = () => {
                     Use this switch to toggle the bot running on your computer
 				</Text>
 				<Toggle checked={checked} onChange={onCheckedChange}></Toggle>
-			</Layout>
+			</Layout>}
 			<Layout style={{ marginBottom: 0 }}>
 				{counts && <CircularProgress
 					value={counts?.count}

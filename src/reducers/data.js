@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
     case GOT_DATA:
       return { ...state, [name]: action[name] };
     case CLEAR_DATA:
-      return { ...state, question: undefined};
+      return { ...state, [name]: null};
     default:
       return state;
   }
