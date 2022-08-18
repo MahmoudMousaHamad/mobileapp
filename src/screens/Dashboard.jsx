@@ -1,6 +1,6 @@
 import React from "react";
 import CircularProgress from "react-native-circular-progress-indicator";
-import { Card, Layout, Text, Toggle } from "@ui-kitten/components";
+import { Card, Layout, Spinner, Text, Toggle } from "@ui-kitten/components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendData } from "../actions/data";
@@ -13,6 +13,7 @@ const Dashboard = () => {
 	} = useSelector((state) => state.data);
 
 	const [checked, setChecked] = useState();
+	const [loading, setLoading] = useState();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -22,10 +23,11 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		setChecked(botStatus === "start");
+		setLoading(false);
 	}, [botStatus]);
 
 	const onCheckedChange = (isChecked) => {
-		setChecked(isChecked);
+		setLoading(true);
 		dispatch(sendData("set-bot-status", { 
 			status: isChecked ? "start" : "stop",
 			source: "mobile",
@@ -48,16 +50,16 @@ const Dashboard = () => {
 					}
 				</Text>
 			</Card>
-			{desktop && <Layout style={{ 
+			<Layout style={{ 
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center", 
 			}}>
-				<Text category="p1" style={{marginBottom: 10}}>
-                    Use this switch to toggle the bot running on your computer
-				</Text>
-				<Toggle checked={checked} onChange={onCheckedChange}></Toggle>
-			</Layout>}
+				{loading && <Spinner />}
+				{!loading && <Toggle checked={checked} onChange={onCheckedChange} disabled={!desktop}>
+					Start/Stop
+				</Toggle>}
+			</Layout>
 			<Layout style={{ marginBottom: 0 }}>
 				{counts && <CircularProgress
 					value={counts?.count}
