@@ -1,18 +1,11 @@
-import { applyMiddleware, compose, createStore } from "redux";
-import { configureStore } from "@reduxjs/toolkit";
+import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
-import socketIOClient from "socket.io-client";
 
-import * as Actions from "./actions/data";
 import reducer from "./reducers";
 import config from "./config";
-import { APP_STATE_CHANGE, LOGIN_SUCCESS, LOGOUT, ME, SOCKET_SEND_DATA } from "./actions/types";
-import secureStore from "./secureStore";
+import { LOGIN_SUCCESS, LOGOUT, ME, SOCKET_SEND_DATA } from "./actions/types";
 import Socket from './Socket';
 import { getUser } from "./Utils";
-import { useStore } from "react-redux";
-
-let socket;
 
 const SocketMiddleware = (store) => (next) => (action) => {
   const { channel, payload } = action;
