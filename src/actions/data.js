@@ -14,5 +14,5 @@ export const sendData = (channel, data) => ({
 
 export const clearData = (name) => ({
   type: CLEAR_DATA,
-  [name]: null,
+  name,
 });

@@ -7,6 +7,7 @@ export default (state = initialState, action) => {
     case GOT_DATA:
       return { ...state, [name]: action[name] };
     case CLEAR_DATA:
+      console.log("Clearning data with name", name);
       return { ...state, [name]: null};
     default:
       return state;

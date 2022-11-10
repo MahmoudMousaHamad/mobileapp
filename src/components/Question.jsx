@@ -110,15 +110,15 @@ const questionTypeInput = {
 };
 
 function constructInput(type, options, handleChange, answer, handleSubmit) {
-	if (options === "None") {
-		return questionTypeInput[type].element(handleChange, answer, handleSubmit);
+	if (options) {
+		return questionTypeInput[type].element(
+			options,
+			handleChange,
+			answer,
+			handleSubmit
+		);
 	}
-	return questionTypeInput[type].element(
-		options,
-		handleChange,
-		answer,
-		handleSubmit
-	);
+	return questionTypeInput[type].element(handleChange, answer, handleSubmit);
 }
 
 export default ({ question, handleChange, answer, handleSubmit }) => {

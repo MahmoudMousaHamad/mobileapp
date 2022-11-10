@@ -13,7 +13,6 @@ import Socket from "../Socket";
 import config from "../config";
 
 export default () => {
-	// const { question } = useSelector((state) => state.data);
 	const { questions } = useSelector((state) => state.data);
 
 	const [answers, setAnswers] = useState(
@@ -38,6 +37,7 @@ export default () => {
 	useAppState();
 
 	function handleChange(value, index) {
+		console.log(value, index, answers);
 		answers[index] = value;
 		setAnswers([...answers]);
 	}
@@ -49,8 +49,10 @@ export default () => {
 		if (err?.every((error) => !error)) {
 			dispatch(sendData("answers", answers));
 			dispatch(clearData("questions"));
-			setErrors(err);
 			setAnswers();
+		} else {
+			console.log("Error with one of the answers!");
+			setErrors(err);
 		}
 	}
 
