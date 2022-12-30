@@ -2,9 +2,9 @@
   "name": "JobApplier",
   "displayName": "JobApplier",
   "expo": {
-    "name": "jobapplier",
-    "slug": "jobapplier",
-    "version": "1.0.7",
+    "name": "JobApplier",
+    "slug": "mobileapp",
+    "version": "1.0.10",
     "sdkVersion": "42.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

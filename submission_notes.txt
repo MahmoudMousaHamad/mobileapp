@@ -1,7 +1,9 @@
 Google Play
 - Build:
-    - app.json AND app.config.js: increment android.versionCode
-    - app.json AND app.config.js: increment version
+    - app.json AND app.config.js: 
+        - increment android.versionCode
+    - app.json AND app.config.js: 
+        - increment version
     - Command: eas build --platform android
 - Submit:
     - eas.json: check/change track and release status 
